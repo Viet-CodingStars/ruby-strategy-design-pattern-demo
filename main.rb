@@ -1,63 +1,68 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative 'lib/bond_game'
+# Load all bonds
+require_relative 'lib/bonds/base_bond'
+require_relative 'lib/bonds/xianzhou_bond'
+require_relative 'lib/bonds/wolf_hunt_bond'
+require_relative 'lib/bonds/night_demigod_bond'
+require_relative 'lib/bonds/day_demigod_bond'
+require_relative 'lib/bonds/belobog_bond'
+require_relative 'lib/bonds/express_cohort_bond'
+require_relative 'lib/bonds/cosmic_scholar_bond'
+require_relative 'lib/bonds/galactic_voyager_bond'
+require_relative 'lib/bonds/planet_of_festivities_bond'
+require_relative 'lib/bonds/stellaron_hunters_bond'
+require_relative 'lib/bonds/galaxy_rangers_bond'
+require_relative 'lib/bonds/ipc_bond'
 
-puts '=' * 60
-puts 'Honkai Star Rail Currency War - Bond Selection Demo'
+puts '=' * 70
+puts 'Honkai Star Rail Currency War - Bond System Demo'
 puts 'Using Strategy Design Pattern'
-puts '=' * 60
+puts '=' * 70
 puts
 
-# Create a game instance
-game = BondGame.new
+# Create all bonds
+bonds = [
+  Bonds::XianzhouBond.new,
+  Bonds::WolfHuntBond.new,
+  Bonds::NightDemigodBond.new,
+  Bonds::DayDemigodBond.new,
+  Bonds::BelobogBond.new,
+  Bonds::ExpressCohortBond.new,
+  Bonds::CosmicScholarBond.new,
+  Bonds::GalacticVoyagerBond.new,
+  Bonds::PlanetOfFestivitiesBond.new,
+  Bonds::StellaronHuntersBond.new,
+  Bonds::GalaxyRangersBond.new,
+  Bonds::IpcBond.new
+]
 
-# Define the bond range (1-36 is common for Currency War)
-bond_range = 1..36
+# Display all bonds in a table format
+puts '| %-21s | %-6s | %-6s | %-4s | %-8s |' % ['Bond Name', 'Bronze', 'Silver', 'Gold', 'Platinum']
+puts '|' + '-' * 23 + '|' + '-' * 8 + '|' + '-' * 8 + '|' + '-' * 6 + '|' + '-' * 10 + '|'
 
-# Demonstrate Odd Numbers Strategy
-puts '-' * 60
-puts 'Strategy 1: Odd Numbers'
-puts '-' * 60
-game.strategy = Strategies::OddNumbersStrategy.new(bond_range)
-game.display_bonds
+bonds.each do |bond|
+  bronze = bond.requirement_for(:bronze) || ''
+  silver = bond.requirement_for(:silver) || ''
+  gold = bond.requirement_for(:gold) || ''
+  platinum = bond.requirement_for(:platinum) || ''
 
-# Demonstrate Even Numbers Strategy
-puts '-' * 60
-puts 'Strategy 2: Even Numbers'
-puts '-' * 60
-game.strategy = Strategies::EvenNumbersStrategy.new(bond_range)
-game.display_bonds
+  puts '| %-21s | %-6s | %-6s | %-4s | %-8s |' % [bond.name, bronze, silver, gold, platinum]
+end
 
-# Demonstrate Sequence Numbers Strategy (every number)
-puts '-' * 60
-puts 'Strategy 3: Sequence Numbers (step: 1)'
-puts '-' * 60
-game.strategy = Strategies::SequenceNumbersStrategy.new(bond_range, step: 1)
-game.display_bonds
+puts
+puts '=' * 70
+puts 'Bond Details (Strategy Information)'
+puts '=' * 70
+puts
 
-# Demonstrate Sequence Numbers Strategy with step of 3
-puts '-' * 60
-puts 'Strategy 4: Sequence Numbers (step: 3)'
-puts '-' * 60
-game.strategy = Strategies::SequenceNumbersStrategy.new(bond_range, step: 3)
-game.display_bonds
+# Display detailed information for each bond
+bonds.each do |bond|
+  puts '-' * 70
+  bond.display_info
+end
 
-# Demonstrate Sequence Numbers Strategy with step of 5
-puts '-' * 60
-puts 'Strategy 5: Sequence Numbers (step: 5)'
-puts '-' * 60
-game.strategy = Strategies::SequenceNumbersStrategy.new(bond_range, step: 5)
-game.display_bonds
-
-# Demonstrate with a different range
-puts '-' * 60
-puts 'Strategy 6: Odd Numbers (Range: 10-20)'
-puts '-' * 60
-custom_range = 10..20
-game.strategy = Strategies::OddNumbersStrategy.new(custom_range)
-game.display_bonds
-
-puts '=' * 60
+puts '=' * 70
 puts 'Demo completed!'
-puts '=' * 60
+puts '=' * 70

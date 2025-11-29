@@ -4,42 +4,55 @@ Ruby Strategy Design Pattern demo in the case of Honkai Star Rail Currency War.
 
 ## Overview
 
-This project demonstrates the Strategy Design Pattern using Ruby. The pattern is applied to a bond selection system for the Honkai Star Rail Currency War game.
+This project demonstrates the Strategy Design Pattern using Ruby. The pattern is applied to a bond system for the Honkai Star Rail Currency War game.
 
 ## Strategy Design Pattern
 
 The Strategy pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable. The pattern lets the algorithm vary independently from clients that use it.
 
-### Components
+### Strategies
 
 1. **Base Strategy** (`Strategies::BaseStrategy`) - The abstract base class that defines the interface for all strategies
 2. **Odd Numbers Strategy** (`Strategies::OddNumbersStrategy`) - Selects all odd numbers from a given range
 3. **Even Numbers Strategy** (`Strategies::EvenNumbersStrategy`) - Selects all even numbers from a given range
 4. **Sequence Numbers Strategy** (`Strategies::SequenceNumbersStrategy`) - Selects numbers in sequence with a configurable step from a given range
-5. **BondGame** - The context class that uses strategies to select bond numbers
+
+### Bonds
+
+Bonds inherit from the three strategies and define specific level requirements:
+
+| Bond Name             | Bronze | Silver | Gold | Platinum | Strategy         |
+|-----------------------|--------|--------|------|----------|------------------|
+| Xianzhou              | 3      | 5      | 7    | 10       | Odd (modified)   |
+| Wolf Hunt             | 3      | 5      | 7    | 9        | Odd              |
+| Night Demigod         | 3      | 5      | 7    | 9        | Odd              |
+| Day Demigod           | 3      | 5      | 7    | 9        | Odd              |
+| Belobog               | 2      | 4      | 6    |          | Even             |
+| Express Cohort        | 2      | 4      | 6    |          | Even             |
+| Cosmic Scholar        | 2      | 4      | 6    |          | Even             |
+| Galactic Voyager      | 1      | 3      | 5    | 7        | Sequence         |
+| Planet of Festivities | 2      | 4      | 6    |          | Even             |
+| Stellaron Hunters     | 2      | 3      | 4    |          | Sequence         |
+| Galaxy Rangers        | 1      | 2      | 3    |          | Sequence         |
+| IPC                   | 2      |        | 3    |          | Sequence         |
 
 ## Usage
 
 ```ruby
-require_relative 'lib/bond_game'
+require_relative 'lib/bonds/xianzhou_bond'
 
-# Create a game instance
-game = BondGame.new
+# Create a bond
+bond = Bonds::XianzhouBond.new
 
-# Define a range of bond numbers
-bond_range = 1..36
+# Get level requirements
+bond.requirement_for(:bronze)    # => 3
+bond.requirement_for(:platinum)  # => 10
 
-# Use the Odd Numbers Strategy
-game.strategy = Strategies::OddNumbersStrategy.new(bond_range)
-puts game.select_bonds  # => [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35]
+# Check available levels
+bond.available_levels  # => [:bronze, :silver, :gold, :platinum]
 
-# Use the Even Numbers Strategy
-game.strategy = Strategies::EvenNumbersStrategy.new(bond_range)
-puts game.select_bonds  # => [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
-
-# Use the Sequence Numbers Strategy with step of 3
-game.strategy = Strategies::SequenceNumbersStrategy.new(bond_range, step: 3)
-puts game.select_bonds  # => [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34]
+# Get strategy info
+bond.strategy.name  # => "Odd Numbers Strategy"
 ```
 
 ## Running the Demo
@@ -48,30 +61,29 @@ puts game.select_bonds  # => [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34]
 ruby main.rb
 ```
 
-## Running Tests
-
-```bash
-rspec spec/
-```
-
 ## Project Structure
 
 ```
 ├── lib/
-│   ├── bond_game.rb                         # Context class
-│   └── strategies/
-│       ├── base_strategy.rb                 # Abstract base strategy
-│       ├── odd_numbers_strategy.rb          # Odd numbers strategy
-│       ├── even_numbers_strategy.rb         # Even numbers strategy
-│       └── sequence_numbers_strategy.rb     # Sequence numbers strategy
-├── spec/
-│   ├── spec_helper.rb
-│   ├── base_strategy_spec.rb
-│   ├── odd_numbers_strategy_spec.rb
-│   ├── even_numbers_strategy_spec.rb
-│   ├── sequence_numbers_strategy_spec.rb
-│   └── bond_game_spec.rb
+│   ├── strategies/
+│   │   ├── base_strategy.rb                 # Abstract base strategy
+│   │   ├── odd_numbers_strategy.rb          # Odd numbers strategy
+│   │   ├── even_numbers_strategy.rb         # Even numbers strategy
+│   │   └── sequence_numbers_strategy.rb     # Sequence numbers strategy
+│   └── bonds/
+│       ├── base_bond.rb                     # Abstract base bond
+│       ├── xianzhou_bond.rb                 # Xianzhou bond
+│       ├── wolf_hunt_bond.rb                # Wolf Hunt bond
+│       ├── night_demigod_bond.rb            # Night Demigod bond
+│       ├── day_demigod_bond.rb              # Day Demigod bond
+│       ├── belobog_bond.rb                  # Belobog bond
+│       ├── express_cohort_bond.rb           # Express Cohort bond
+│       ├── cosmic_scholar_bond.rb           # Cosmic Scholar bond
+│       ├── galactic_voyager_bond.rb         # Galactic Voyager bond
+│       ├── planet_of_festivities_bond.rb    # Planet of Festivities bond
+│       ├── stellaron_hunters_bond.rb        # Stellaron Hunters bond
+│       ├── galaxy_rangers_bond.rb           # Galaxy Rangers bond
+│       └── ipc_bond.rb                      # IPC bond
 ├── main.rb                                  # Demo application
-├── Gemfile
 └── README.md
 ```
