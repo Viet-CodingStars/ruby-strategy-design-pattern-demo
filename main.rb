@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # Load all bonds
-require_relative 'lib/bonds/base_bond'
+require_relative 'lib/strategies/base_strategy'
 require_relative 'lib/bonds/xianzhou_bond'
 require_relative 'lib/bonds/wolf_hunt_bond'
 require_relative 'lib/bonds/night_demigod_bond'

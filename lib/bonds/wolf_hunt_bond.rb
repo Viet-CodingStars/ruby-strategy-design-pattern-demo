@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'base_bond'
+require_relative '../strategies/base_strategy'
 require_relative '../strategies/odd_numbers_strategy'
 
 module Bonds
