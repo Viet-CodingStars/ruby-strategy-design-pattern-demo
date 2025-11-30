@@ -16,53 +16,74 @@ require_relative 'lib/bonds/stellaron_hunters_bond'
 require_relative 'lib/bonds/galaxy_rangers_bond'
 require_relative 'lib/bonds/ipc_bond'
 
-puts '=' * 70
-puts 'Honkai Star Rail Currency War - Bond System Demo'
-puts 'Using Strategy Design Pattern'
-puts '=' * 70
-puts
-
 # Create all bonds
-bonds = [
-  Bonds::XianzhouBond.new,
-  Bonds::WolfHuntBond.new,
-  Bonds::NightDemigodBond.new,
-  Bonds::DayDemigodBond.new,
-  Bonds::BelobogBond.new,
-  Bonds::ExpressCohortBond.new,
-  Bonds::CosmicScholarBond.new,
-  Bonds::GalacticVoyagerBond.new,
-  Bonds::PlanetOfFestivitiesBond.new,
-  Bonds::StellaronHuntersBond.new,
-  Bonds::GalaxyRangersBond.new,
-  Bonds::IpcBond.new
-]
+BONDS = {
+  'Xianzhou' => Bonds::XianzhouBond.new,
+  'Wolf Hunt' => Bonds::WolfHuntBond.new,
+  'Night Demigod' => Bonds::NightDemigodBond.new,
+  'Day Demigod' => Bonds::DayDemigodBond.new,
+  'Belobog' => Bonds::BelobogBond.new,
+  'Express Cohort' => Bonds::ExpressCohortBond.new,
+  'Cosmic Scholar' => Bonds::CosmicScholarBond.new,
+  'Galactic Voyager' => Bonds::GalacticVoyagerBond.new,
+  'Planet of Festivities' => Bonds::PlanetOfFestivitiesBond.new,
+  'Stellaron Hunters' => Bonds::StellaronHuntersBond.new,
+  'Galaxy Rangers' => Bonds::GalaxyRangersBond.new,
+  'IPC' => Bonds::IpcBond.new
+}.freeze
+
+# Check the level for a bond with a given number
+# @param bond_name [String] The name of the bond
+# @param number [Integer] The number to check
+# @return [String] The level achieved or 'none'
+def check_bond_level(bond_name, number)
+  bond = BONDS[bond_name]
+  return 'Bond not found' unless bond
+
+  level = bond.level_for_number(number)
+  level ? level.to_s : 'none'
+end
 
 # Display all bonds in a table format
-puts '| %-21s | %-6s | %-6s | %-4s | %-8s |' % ['Bond Name', 'Bronze', 'Silver', 'Gold', 'Platinum']
-puts '|' + '-' * 23 + '|' + '-' * 8 + '|' + '-' * 8 + '|' + '-' * 6 + '|' + '-' * 10 + '|'
+def display_bonds_table
+  puts '=' * 70
+  puts 'Honkai Star Rail Currency War - Bond System'
+  puts 'Using Strategy Design Pattern'
+  puts '=' * 70
+  puts
 
-bonds.each do |bond|
-  bronze = bond.requirement_for(:bronze) || ''
-  silver = bond.requirement_for(:silver) || ''
-  gold = bond.requirement_for(:gold) || ''
-  platinum = bond.requirement_for(:platinum) || ''
+  puts '| %-21s | %-6s | %-6s | %-4s | %-8s |' % ['Bond Name', 'Bronze', 'Silver', 'Gold', 'Platinum']
+  puts '|' + '-' * 23 + '|' + '-' * 8 + '|' + '-' * 8 + '|' + '-' * 6 + '|' + '-' * 10 + '|'
 
-  puts '| %-21s | %-6s | %-6s | %-4s | %-8s |' % [bond.name, bronze, silver, gold, platinum]
+  BONDS.each_value do |bond|
+    bronze = bond.requirement_for(:bronze) || ''
+    silver = bond.requirement_for(:silver) || ''
+    gold = bond.requirement_for(:gold) || ''
+    platinum = bond.requirement_for(:platinum) || ''
+
+    puts '| %-21s | %-6s | %-6s | %-4s | %-8s |' % [bond.name, bronze, silver, gold, platinum]
+  end
+  puts
 end
 
-puts
-puts '=' * 70
-puts 'Bond Details (Strategy Information)'
-puts '=' * 70
-puts
+# Main execution
+if __FILE__ == $PROGRAM_NAME
+  if ARGV.empty?
+    # Display the bonds table if no arguments provided
+    display_bonds_table
+  else
+    # Parse input: "BondName,Number"
+    input = ARGV[0]
+    parts = input.split(',').map(&:strip)
 
-# Display detailed information for each bond
-bonds.each do |bond|
-  puts '-' * 70
-  bond.display_info
+    if parts.length == 2
+      bond_name = parts[0]
+      number = parts[1].to_i
+      result = check_bond_level(bond_name, number)
+      puts result
+    else
+      puts 'Usage: ruby main.rb BondName,Number'
+      puts 'Example: ruby main.rb Belobog,3'
+    end
+  end
 end
-
-puts '=' * 70
-puts 'Demo completed!'
-puts '=' * 70

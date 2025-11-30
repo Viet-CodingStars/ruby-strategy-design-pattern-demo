@@ -45,6 +45,20 @@ module Bonds
       levels.keys.select { |level| level_available?(level) }
     end
 
+    # Get the level achieved for a given number
+    # @param number [Integer] The number to check
+    # @return [Symbol, nil] The highest level achieved or nil if none
+    def level_for_number(number)
+      achieved_level = nil
+      LEVELS.each do |level|
+        req = requirement_for(level)
+        next if req.nil?
+
+        achieved_level = level if number >= req
+      end
+      achieved_level
+    end
+
     # Display bond information
     def display_info
       puts "#{name}:"
