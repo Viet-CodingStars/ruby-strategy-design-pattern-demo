@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 # Load all bonds
-require_relative 'lib/strategies/base_strategy'
 require_relative 'lib/bonds/xianzhou_bond'
 require_relative 'lib/bonds/wolf_hunt_bond'
 require_relative 'lib/bonds/night_demigod_bond'
@@ -18,18 +17,18 @@ require_relative 'lib/bonds/ipc_bond'
 
 # Create all bonds
 BONDS = {
-  'Xianzhou' => Bonds::XianzhouBond.new,
-  'Wolf Hunt' => Bonds::WolfHuntBond.new,
-  'Night Demigod' => Bonds::NightDemigodBond.new,
-  'Day Demigod' => Bonds::DayDemigodBond.new,
-  'Belobog' => Bonds::BelobogBond.new,
-  'Express Cohort' => Bonds::ExpressCohortBond.new,
-  'Cosmic Scholar' => Bonds::CosmicScholarBond.new,
-  'Galactic Voyager' => Bonds::GalacticVoyagerBond.new,
-  'Planet of Festivities' => Bonds::PlanetOfFestivitiesBond.new,
-  'Stellaron Hunters' => Bonds::StellaronHuntersBond.new,
-  'Galaxy Rangers' => Bonds::GalaxyRangersBond.new,
-  'IPC' => Bonds::IpcBond.new
+  'Xianzhou' => XianzhouBond.new,
+  'Wolf Hunt' => WolfHuntBond.new,
+  'Night Demigod' => NightDemigodBond.new,
+  'Day Demigod' => DayDemigodBond.new,
+  'Belobog' => BelobogBond.new,
+  'Express Cohort' => ExpressCohortBond.new,
+  'Cosmic Scholar' => CosmicScholarBond.new,
+  'Galactic Voyager' => GalacticVoyagerBond.new,
+  'Planet of Festivities' => PlanetOfFestivitiesBond.new,
+  'Stellaron Hunters' => StellaronHuntersBond.new,
+  'Galaxy Rangers' => GalaxyRangersBond.new,
+  'IPC' => IpcBond.new
 }.freeze
 
 # Check the level for a bond with a given number
@@ -48,7 +47,6 @@ end
 def display_bonds_table
   puts '=' * 70
   puts 'Honkai Star Rail Currency War - Bond System'
-  puts 'Using Strategy Design Pattern'
   puts '=' * 70
   puts
 

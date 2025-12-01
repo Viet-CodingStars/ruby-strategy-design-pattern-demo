@@ -1,21 +1,14 @@
 # frozen_string_literal: true
 
-require_relative '../strategies/base_strategy'
 require_relative '../strategies/sequence_numbers_strategy'
 
-module Bonds
-  # IPC bond - uses sequence strategy with custom levels (2, nil, 3)
-  class IpcBond < BaseBond
-    def initialize
-      super(Strategies::SequenceNumbersStrategy.new(2..3, step: 1))
-    end
+# IPC bond - inherits from SequenceNumbersStrategy with custom levels (2, nil, 3)
+class IpcBond < SequenceNumbersStrategy
+  def name
+    'IPC'
+  end
 
-    def name
-      'IPC'
-    end
-
-    def levels
-      { bronze: 2, silver: nil, gold: 3, platinum: nil }
-    end
+  def levels
+    { bronze: 2, silver: nil, gold: 3, platinum: nil }
   end
 end

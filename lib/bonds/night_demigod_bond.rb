@@ -1,21 +1,10 @@
 # frozen_string_literal: true
 
-require_relative '../strategies/base_strategy'
 require_relative '../strategies/odd_numbers_strategy'
 
-module Bonds
-  # Night Demigod bond - uses odd numbers strategy (3, 5, 7, 9)
-  class NightDemigodBond < BaseBond
-    def initialize
-      super(Strategies::OddNumbersStrategy.new(3..9))
-    end
-
-    def name
-      'Night Demigod'
-    end
-
-    def levels
-      { bronze: 3, silver: 5, gold: 7, platinum: 9 }
-    end
+# Night Demigod bond - inherits from OddNumbersStrategy
+class NightDemigodBond < OddNumbersStrategy
+  def name
+    'Night Demigod'
   end
 end
