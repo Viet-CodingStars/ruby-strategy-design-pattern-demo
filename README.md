@@ -4,22 +4,15 @@ Ruby Strategy Design Pattern demo in the case of Honkai Star Rail Currency War.
 
 ## Overview
 
-This project demonstrates the Strategy Design Pattern using Ruby. The pattern is applied to a bond system for the Honkai Star Rail Currency War game.
+This project demonstrates an inheritance-based design pattern using Ruby. The pattern is applied to a bond system for the Honkai Star Rail Currency War game.
 
-## Strategy Design Pattern
+## Architecture
 
-The Strategy pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable. The pattern lets the algorithm vary independently from clients that use it.
-
-### Strategies
-
-1. **Base Strategy** (`Strategies::BaseStrategy`) - The abstract base class that defines the interface for all strategies
-2. **Odd Numbers Strategy** (`Strategies::OddNumbersStrategy`) - Selects all odd numbers from a given range
-3. **Even Numbers Strategy** (`Strategies::EvenNumbersStrategy`) - Selects all even numbers from a given range
-4. **Sequence Numbers Strategy** (`Strategies::SequenceNumbersStrategy`) - Selects numbers in sequence with a configurable step from a given range
+- **BaseStrategy**: Abstract base class containing common bond functionality (level checking, requirements)
+- **Strategy Classes**: OddNumbersStrategy, EvenNumbersStrategy, SequenceNumbersStrategy inherit from BaseStrategy
+- **Bond Classes**: Each bond inherits directly from its corresponding strategy class (e.g., `BelobogBond < EvenNumbersStrategy < BaseStrategy`)
 
 ### Bonds
-
-Bonds inherit from the three strategies and define specific level requirements:
 
 | Bond Name             | Bronze | Silver | Gold | Platinum | Strategy         |
 |-----------------------|--------|--------|------|----------|------------------|
@@ -38,52 +31,39 @@ Bonds inherit from the three strategies and define specific level requirements:
 
 ## Usage
 
-```ruby
-require_relative 'lib/bonds/xianzhou_bond'
-
-# Create a bond
-bond = Bonds::XianzhouBond.new
-
-# Get level requirements
-bond.requirement_for(:bronze)    # => 3
-bond.requirement_for(:platinum)  # => 10
-
-# Check available levels
-bond.available_levels  # => [:bronze, :silver, :gold, :platinum]
-
-# Get strategy info
-bond.strategy.name  # => "Odd Numbers Strategy"
-```
-
-## Running the Demo
+Check bond level with a given number:
 
 ```bash
-ruby main.rb
+ruby main.rb BondName,Number
 ```
+
+Examples:
+- `ruby main.rb Belobog,3` → `bronze`
+- `ruby main.rb Belobog,1` → `none`
+- `ruby main.rb Belobog,6` → `gold`
 
 ## Project Structure
 
 ```
 ├── lib/
 │   ├── strategies/
-│   │   ├── base_strategy.rb                 # Abstract base strategy
-│   │   ├── odd_numbers_strategy.rb          # Odd numbers strategy
-│   │   ├── even_numbers_strategy.rb         # Even numbers strategy
+│   │   ├── base_strategy.rb                 # Abstract base class
+│   │   ├── odd_numbers_strategy.rb          # Odd numbers strategy (3,5,7,9)
+│   │   ├── even_numbers_strategy.rb         # Even numbers strategy (2,4,6)
 │   │   └── sequence_numbers_strategy.rb     # Sequence numbers strategy
 │   └── bonds/
-│       ├── base_bond.rb                     # Abstract base bond
-│       ├── xianzhou_bond.rb                 # Xianzhou bond
-│       ├── wolf_hunt_bond.rb                # Wolf Hunt bond
-│       ├── night_demigod_bond.rb            # Night Demigod bond
-│       ├── day_demigod_bond.rb              # Day Demigod bond
-│       ├── belobog_bond.rb                  # Belobog bond
-│       ├── express_cohort_bond.rb           # Express Cohort bond
-│       ├── cosmic_scholar_bond.rb           # Cosmic Scholar bond
-│       ├── galactic_voyager_bond.rb         # Galactic Voyager bond
-│       ├── planet_of_festivities_bond.rb    # Planet of Festivities bond
-│       ├── stellaron_hunters_bond.rb        # Stellaron Hunters bond
-│       ├── galaxy_rangers_bond.rb           # Galaxy Rangers bond
-│       └── ipc_bond.rb                      # IPC bond
-├── main.rb                                  # Demo application
+│       ├── xianzhou_bond.rb                 # Xianzhou bond (Odd, modified)
+│       ├── wolf_hunt_bond.rb                # Wolf Hunt bond (Odd)
+│       ├── night_demigod_bond.rb            # Night Demigod bond (Odd)
+│       ├── day_demigod_bond.rb              # Day Demigod bond (Odd)
+│       ├── belobog_bond.rb                  # Belobog bond (Even)
+│       ├── express_cohort_bond.rb           # Express Cohort bond (Even)
+│       ├── cosmic_scholar_bond.rb           # Cosmic Scholar bond (Even)
+│       ├── galactic_voyager_bond.rb         # Galactic Voyager bond (Sequence)
+│       ├── planet_of_festivities_bond.rb    # Planet of Festivities bond (Even)
+│       ├── stellaron_hunters_bond.rb        # Stellaron Hunters bond (Sequence)
+│       ├── galaxy_rangers_bond.rb           # Galaxy Rangers bond (Sequence)
+│       └── ipc_bond.rb                      # IPC bond (Sequence)
+├── main.rb                                  # Main application
 └── README.md
 ```
